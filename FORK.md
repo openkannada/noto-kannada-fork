@@ -30,3 +30,14 @@ The SIL Open Font License of this project lists no Reserved Font Name, so the li
     uv run pytest
 
 The upstream workflow `Build, QA, Release` is disabled in this fork; `Fork CI` builds and tests instead.
+
+## U+0CDC gate results
+
+`fontqa gate --chars 0CDC` (kannadi) on every named instance of the variable fonts built from this fork:
+
+| Font | Pass | Fail |
+|---|---|---|
+| Sans, 36 instances | 16: Thin to Regular at every width | 20: Medium and heavier, where the 3 inside the bowl closes into extra counters; ExtraCondensed Bold and ExtraBold also fail on stroke contrast |
+| Serif, 9 instances | 7: Thin to Bold | 2: ExtraBold and Black, extra counters |
+
+The failing weights need a designer, or at least a hand-drawn heavy skeleton.
