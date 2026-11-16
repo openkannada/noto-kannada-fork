@@ -10,7 +10,7 @@ from fontTools.ttLib import TTFont
 BUILD = Path(os.environ.get("BUILD", Path(__file__).parent.parent / "build"))
 FONTS = {"sans": "sans/NotoSansKannada-VF.ttf", "serif": "serif/NotoSerifKannada-VF.ttf"}
 VIRAMA, ZWJ, ZWNJ, RA, YA = "\u0ccd", "\u200d", "\u200c", "\u0cb0", "\u0caf"
-R_SIGN, ARCHAIC_SHRII = "\u0cc3", "\u0cdc"
+R_SIGN, RI, TA, ARCHAIC_SHRII = "\u0cc3", "\u0c8b", "\u0ca4", "\u0cdc"
 CONSONANTS = [chr(cp) for cp in [*range(0x0C95, 0x0CBA), 0x0CDE] if cp not in (0x0CA9, 0x0CB4)]
 
 
@@ -34,10 +34,14 @@ def font(request) -> Font:
     return Font(BUILD / FONTS[request.param])
 
 
-def test_ra_with_vocalic_r_sign_stays_2_glyphs(font):
-    # notofonts/kannada#61: the sequence was drawn as the vowel letter with a reph.
+def test_ra_with_vocalic_r_sign_draws_the_vowel_letter_with_a_reph(font):
+    # Kannada writes r + vocalic R as ಋ with an arkavattu (ನೈರ್ಋತ್ಯ); notofonts/kannada#61.
+    assert font.glyphs(RA + R_SIGN) == font.glyphs(RA + VIRAMA + RI)
+
+
+def test_subscript_ra_with_vocalic_r_sign_keeps_the_sign(font):
     cmap = font.tt.getBestCmap()
-    assert font.glyphs(RA + R_SIGN) == [cmap[ord(RA)], cmap[ord(R_SIGN)]]
+    assert cmap[ord(RI)] not in font.glyphs(TA + VIRAMA + RA + R_SIGN)
 
 
 def test_zwnj_before_the_virama_forms_the_subscript_like_zwj(font):

@@ -1,8 +1,7 @@
 # Drafts for upstream
 
-Texts for Prasad to send, or not. Neither has been submitted. Each pull request should carry only its own source change, cut from this fork's diff.
+Text for Prasad to send, or not. It has not been submitted. Each pull request should carry only its own source change, cut from this fork's diff.
 
 | File | Where it would go |
 |---|---|
-| `pr-61-ra-vocalic-r.md` | notofonts/kannada, pull request closing #61 |
 | `pr-archaic-shrii.md` | notofonts/kannada, pull request adding U+0CDC |

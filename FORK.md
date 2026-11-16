@@ -6,8 +6,9 @@ This is a working fork of [notofonts/kannada](https://github.com/notofonts/kanna
 
 | Change | Files | Upstream issue |
 |---|---|---|
-| ರೃ (U+0CB0 U+0CC3) stays ra + vocalic R sign; it was drawn as ಋ with a reph | Sans `ContextualGSUB12`, `SingleSubstitution13`; Serif `ra_rVocalic_kannada`, `swap_Ra_rVocalic` | notofonts/kannada#61 |
 | U+0CDC KANNADA ARCHAIC SHRII, drafted in every master | `archaicshriiknda` (Sans), `archaicShrii_kannada` (Serif) | Unicode 17.0, L2/22-006 |
+
+Not changed: ರೃ (U+0CB0 U+0CC3). Like upstream, the fonts draw it as ಋ with an arkavattu, the same as ರ್ಋ. Kannada writes r + vocalic R with the letter ಋ: Kannada Wikipedia spells the word for southwest ನೈಋತ್ಯ 1,132 times, ನೈರುತ್ಯ 298 times and ನೈರೃತ್ಯ twice, and the Alar dictionary spells ನೈರ್ಋತಿ and ನಿರ್ಋತಿ with an arkavattu and never uses ರೃ. Baraha phonetic typing of nair~rutya produces ರ + ೃ, and the ligature shows that as the written form. ITF Devanagari, Kohinoor Devanagari and Devanagari MT draw the Devanagari equivalent the same way. An earlier version of this fork removed the ligature for notofonts/kannada#61, and this was undone.
 
 Not changed: ra + ZWNJ + virama + consonant. An earlier version of this fork made the ZWNJ block the subscript. Kannada Wikipedia uses the sequence 314 times, 304 of them as ra + ZWNJ + virama + ya + vowel sign in loanwords such as ರ‌್ಯಾಂಕ್, the same words also written with the documented ZWJ sequence. Writers mean the subscript, so the fork keeps upstream's behavior, and a test checks that ZWNJ and ZWJ shape alike there. Upstream maintainers said the same on notofonts/kannada PR #65, the earlier attempt, which is closed. See also harfbuzz/harfbuzz#2018.
 
