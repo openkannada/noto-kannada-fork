@@ -16,3 +16,8 @@ package.json
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Fork builds and test environment
+build/
+.venv/
+__pycache__/
