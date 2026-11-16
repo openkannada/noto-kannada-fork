@@ -9,7 +9,6 @@ from fontTools.ttLib import TTFont
 
 BUILD = Path(os.environ.get("BUILD", Path(__file__).parent.parent / "build"))
 FONTS = {"sans": "sans/NotoSansKannada-VF.ttf", "serif": "serif/NotoSerifKannada-VF.ttf"}
-KA = "\u0c95"
 VIRAMA, ZWJ, ZWNJ, RA, YA = "\u0ccd", "\u200d", "\u200c", "\u0cb0", "\u0caf"
 R_SIGN, ARCHAIC_SHRII = "\u0cc3", "\u0cdc"
 CONSONANTS = [chr(cp) for cp in [*range(0x0C95, 0x0CBA), 0x0CDE] if cp not in (0x0CA9, 0x0CB4)]
@@ -42,7 +41,7 @@ def test_ra_with_vocalic_r_sign_stays_2_glyphs(font):
 
 
 def test_zwnj_before_the_virama_forms_the_subscript_like_zwj(font):
-    # Kannada Wikipedia uses ra + ZWNJ + virama like ZWJ (notofonts/kannada#65), so keep both alike.
+    # Kannada Wikipedia uses ra + ZWNJ + virama like ZWJ (see the closed notofonts/kannada PR #65).
     assert font.glyphs(RA + ZWNJ + VIRAMA + YA) == font.glyphs(RA + ZWJ + VIRAMA + YA)
 
 

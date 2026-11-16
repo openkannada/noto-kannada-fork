@@ -9,7 +9,7 @@ This is a working fork of [notofonts/kannada](https://github.com/notofonts/kanna
 | ರೃ (U+0CB0 U+0CC3) stays ra + vocalic R sign; it was drawn as ಋ with a reph | Sans `ContextualGSUB12`, `SingleSubstitution13`; Serif `ra_rVocalic_kannada`, `swap_Ra_rVocalic` | notofonts/kannada#61 |
 | U+0CDC KANNADA ARCHAIC SHRII, drafted in every master | `archaicshriiknda` (Sans), `archaicShrii_kannada` (Serif) | Unicode 17.0, L2/22-006 |
 
-Not changed: ra + ZWNJ + virama + consonant. An earlier version of this fork made the ZWNJ block the subscript. Kannada Wikipedia uses the sequence 314 times, 304 of them as ra + ZWNJ + virama + ya + vowel sign in loanwords such as ರ‌್ಯಾಂಕ್, the same words also written with the documented ZWJ sequence. Writers mean the subscript, so the fork keeps upstream's behavior, and a test checks that ZWNJ and ZWJ shape alike there. See notofonts/kannada#65 and harfbuzz/harfbuzz#2018.
+Not changed: ra + ZWNJ + virama + consonant. An earlier version of this fork made the ZWNJ block the subscript. Kannada Wikipedia uses the sequence 314 times, 304 of them as ra + ZWNJ + virama + ya + vowel sign in loanwords such as ರ‌್ಯಾಂಕ್, the same words also written with the documented ZWJ sequence. Writers mean the subscript, so the fork keeps upstream's behavior, and a test checks that ZWNJ and ZWJ shape alike there. Upstream maintainers said the same on notofonts/kannada PR #65, the earlier attempt, which is closed. See also harfbuzz/harfbuzz#2018.
 
 The U+0CDC outlines are drafts. See "U+0CDC gate results" below for which instances pass the automated gates.
 
