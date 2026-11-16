@@ -9,7 +9,7 @@ from fontTools.ttLib import TTFont
 
 BUILD = Path(os.environ.get("BUILD", Path(__file__).parent.parent / "build"))
 FONTS = {"sans": "sans/NotoSansKannada-VF.ttf", "serif": "serif/NotoSerifKannada-VF.ttf"}
-KA = "\u0c95"
+KA, KHA, NUKTA = "\u0c95", "\u0c96", "\u0cbc"
 VIRAMA, ZWJ, ZWNJ, RA, YA = "\u0ccd", "\u200d", "\u200c", "\u0cb0", "\u0caf"
 R_SIGN, ARCHAIC_SHRII = "\u0cc3", "\u0cdc"
 CONSONANTS = [chr(cp) for cp in [*range(0x0C95, 0x0CBA), 0x0CDE] if cp not in (0x0CA9, 0x0CB4)]
@@ -56,9 +56,10 @@ MOVED_SIGNS = [
 
 
 @pytest.mark.parametrize("sign", MOVED_SIGNS, ids=lambda s: f"U+{ord(s):04X}")
-def test_sign_moved_before_the_zwnj_keeps_the_conjunct(font, sign):
+@pytest.mark.parametrize("first", [KA, KHA + NUKTA], ids=["plain", "nukta"])
+def test_sign_moved_before_the_zwnj_keeps_the_conjunct(font, first, sign):
     # HarfBuzz moves these signs before the ZWNJ; blocking the subscript would misplace them.
-    assert font.glyphs(KA + ZWNJ + VIRAMA + KA + sign) == font.glyphs(KA + VIRAMA + KA + sign)
+    assert font.glyphs(first + ZWNJ + VIRAMA + YA + sign) == font.glyphs(first + VIRAMA + YA + sign)
 
 
 @pytest.mark.parametrize("sign", [R_SIGN, RR_SIGN], ids=lambda s: f"U+{ord(s):04X}")

@@ -7,7 +7,7 @@ This is a working fork of [notofonts/kannada](https://github.com/notofonts/kanna
 | Change | Files | Upstream issue |
 |---|---|---|
 | ರೃ (U+0CB0 U+0CC3) stays ra + vocalic R sign; it was drawn as ಋ with a reph | Sans `ContextualGSUB12`, `SingleSubstitution13`; Serif `ra_rVocalic_kannada`, `swap_Ra_rVocalic` | notofonts/kannada#61 |
-| In new-order shaping (`knd2`), a ZWNJ right after a consonant and before the virama (ರ‌್ಯ) blocks the subscript; ZWJ still forms it | Sans and Serif `blwf` | harfbuzz/harfbuzz#2018 |
+| In new-order shaping (`knd2`), a ZWNJ right after a consonant (or consonant + nukta) and before the virama (ರ‌್ಯ) blocks the subscript; ZWJ still forms it | Sans and Serif `blwf` | harfbuzz/harfbuzz#2018 |
 | U+0CDC KANNADA ARCHAIC SHRII, drafted in every master | `archaicshriiknda` (Sans), `archaicShrii_kannada` (Serif) | Unicode 17.0, L2/22-006 |
 
 Notes on the ZWNJ change:
