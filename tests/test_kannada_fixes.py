@@ -35,11 +35,12 @@ def font(request) -> Font:
 
 
 def test_ra_with_vocalic_r_sign_draws_the_vowel_letter_with_a_reph(font):
-    # Kannada writes r + vocalic R as ಋ with an arkavattu (ನೈರ್ಋತ್ಯ); notofonts/kannada#61.
+    # Unicode 17.0 Table 12-6: one of the 2 written forms; notofonts/kannada#61.
     assert font.glyphs(RA + R_SIGN) == font.glyphs(RA + VIRAMA + RI)
 
 
 def test_subscript_ra_with_vocalic_r_sign_keeps_the_sign(font):
+    # Guards the ligature's context: only a full ra takes it.
     cmap = font.tt.getBestCmap()
     assert cmap[ord(RI)] not in font.glyphs(TA + VIRAMA + RA + R_SIGN)
 
