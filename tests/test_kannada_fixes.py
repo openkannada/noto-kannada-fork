@@ -9,6 +9,7 @@ from fontTools.ttLib import TTFont
 
 BUILD = Path(os.environ.get("BUILD", Path(__file__).parent.parent / "build"))
 FONTS = {"sans": "sans/NotoSansKannada-VF.ttf", "serif": "serif/NotoSerifKannada-VF.ttf"}
+KA = "\u0c95"
 VIRAMA, ZWJ, ZWNJ, RA, YA = "\u0ccd", "\u200d", "\u200c", "\u0cb0", "\u0caf"
 R_SIGN, ARCHAIC_SHRII = "\u0cc3", "\u0cdc"
 CONSONANTS = [chr(cp) for cp in [*range(0x0C95, 0x0CBA), 0x0CDE] if cp not in (0x0CA9, 0x0CB4)]
@@ -46,6 +47,26 @@ def test_zwnj_before_the_virama_blocks_the_subscript(font):
     with_zwnj = font.glyphs(RA + ZWNJ + VIRAMA + YA)
     assert with_zwnj != with_zwj
     assert font.glyphs(YA)[0] in with_zwnj
+
+
+RR_SIGN = "\u0cc4"
+MOVED_SIGNS = [
+    chr(cp) for cp in [*range(0x0CBE, 0x0CC3), *range(0x0CC6, 0x0CC9), *range(0x0CCA, 0x0CCD)]
+]
+
+
+@pytest.mark.parametrize("sign", MOVED_SIGNS, ids=lambda s: f"U+{ord(s):04X}")
+def test_sign_moved_before_the_zwnj_keeps_the_conjunct(font, sign):
+    # HarfBuzz moves these signs before the ZWNJ; blocking the subscript would misplace them.
+    assert font.glyphs(KA + ZWNJ + VIRAMA + KA + sign) == font.glyphs(KA + VIRAMA + KA + sign)
+
+
+@pytest.mark.parametrize("sign", [R_SIGN, RR_SIGN], ids=lambda s: f"U+{ord(s):04X}")
+def test_sign_after_a_zwnj_cluster_keeps_the_explicit_virama(font, sign):
+    subscript = font.glyphs(KA + VIRAMA + KA)[-1]
+    glyphs = font.glyphs(KA + ZWNJ + VIRAMA + KA + sign)
+    assert subscript not in glyphs
+    assert glyphs[-1] == font.tt.getBestCmap()[ord(sign)]
 
 
 def test_zwj_before_the_virama_still_forms_the_subscript(font):

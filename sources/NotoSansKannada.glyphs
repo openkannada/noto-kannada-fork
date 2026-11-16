@@ -1424,7 +1424,7 @@ code = "sub raknda viramaknda by rephknda;";
 name = rphf;
 },
 {
-code = "ignore sub uni200C viramaknda' [baknda bhaknda caknda chaknda daknda ddaknda ddhaknda dhaknda faknda gaknda ghaknda haknda jaknda januktaknda jhaknda kaknda khaknda laknda llaknda maknda naknda ngaknda nnaknda nyaknda paknda phaknda phanuktaknda raknda rraknda saknda shaknda ssaknda taknda thaknda ttaknda tthaknda vaknda yaknda]';\012sub viramaknda' baknda' by basubscriptknda;\012sub viramaknda' bhaknda' by bhasubscriptknda;\012sub viramaknda' caknda' by casubscriptknda;\012sub viramaknda' chaknda' by chasubscriptknda;\012sub viramaknda' daknda' by dasubscriptknda;\012sub viramaknda' ddaknda' by ddasubscriptknda;\012sub viramaknda' ddhaknda' by ddhasubscriptknda;\012sub viramaknda' dhaknda' by dhasubscriptknda;\012sub viramaknda' faknda' by fasubscriptknda;\012sub viramaknda' gaknda' by gasubscriptknda;\012sub viramaknda' ghaknda' by ghasubscriptknda;\012sub viramaknda' haknda' by hasubscriptknda;\012sub viramaknda' jaknda' by jasubscriptknda;\012sub viramaknda' januktaknda' by januktasubscriptknda;\012sub viramaknda' jhaknda' by jhasubscriptknda;\012sub viramaknda' kaknda' by kasubscriptknda;\012sub viramaknda' khaknda' by khasubscriptknda;\012sub viramaknda' laknda' by lasubscriptknda;\012sub viramaknda' llaknda' by llasubscriptknda;\012sub viramaknda' maknda' by masubscriptknda;\012sub viramaknda' naknda' by nasubscriptknda;\012sub viramaknda' ngaknda' by ngasubscriptknda;\012sub viramaknda' nnaknda' by nnasubscriptknda;\012sub viramaknda' nyaknda' by nyasubscriptknda;\012sub viramaknda' paknda' by pasubscriptknda;\012sub viramaknda' phaknda' by phasubscriptknda;\012sub viramaknda' phanuktaknda' by phanuktasubscriptknda;\012sub viramaknda' raknda' by rasubscriptknda;\012sub viramaknda' rraknda' by rrasubscriptknda;\012sub viramaknda' saknda' by sasubscriptknda;\012sub viramaknda' shaknda' by shasubscriptknda;\012sub viramaknda' ssaknda' by ssasubscriptknda;\012sub viramaknda' taknda' by tasubscriptknda;\012sub viramaknda' thaknda' by thasubscriptknda;\012sub viramaknda' ttaknda' by ttasubscriptknda;\012sub viramaknda' tthaknda' by tthasubscriptknda;\012sub viramaknda' vaknda' by vasubscriptknda;\012sub viramaknda' yaknda' by yasubscriptknda;\012";
+code = "ignore sub [baknda bhaknda caknda chaknda daknda ddaknda ddhaknda dhaknda faknda gaknda ghaknda haknda jaknda januktaknda jhaknda kaknda khaknda laknda llaknda maknda naknda ngaknda nnaknda nyaknda paknda phaknda phanuktaknda raknda rraknda saknda shaknda ssaknda taknda thaknda ttaknda tthaknda vaknda yaknda nuktaknda] uni200C viramaknda' [baknda bhaknda caknda chaknda daknda ddaknda ddhaknda dhaknda faknda gaknda ghaknda haknda jaknda januktaknda jhaknda kaknda khaknda laknda llaknda maknda naknda ngaknda nnaknda nyaknda paknda phaknda phanuktaknda raknda rraknda saknda shaknda ssaknda taknda thaknda ttaknda tthaknda vaknda yaknda]';\012sub viramaknda' baknda' by basubscriptknda;\012sub viramaknda' bhaknda' by bhasubscriptknda;\012sub viramaknda' caknda' by casubscriptknda;\012sub viramaknda' chaknda' by chasubscriptknda;\012sub viramaknda' daknda' by dasubscriptknda;\012sub viramaknda' ddaknda' by ddasubscriptknda;\012sub viramaknda' ddhaknda' by ddhasubscriptknda;\012sub viramaknda' dhaknda' by dhasubscriptknda;\012sub viramaknda' faknda' by fasubscriptknda;\012sub viramaknda' gaknda' by gasubscriptknda;\012sub viramaknda' ghaknda' by ghasubscriptknda;\012sub viramaknda' haknda' by hasubscriptknda;\012sub viramaknda' jaknda' by jasubscriptknda;\012sub viramaknda' januktaknda' by januktasubscriptknda;\012sub viramaknda' jhaknda' by jhasubscriptknda;\012sub viramaknda' kaknda' by kasubscriptknda;\012sub viramaknda' khaknda' by khasubscriptknda;\012sub viramaknda' laknda' by lasubscriptknda;\012sub viramaknda' llaknda' by llasubscriptknda;\012sub viramaknda' maknda' by masubscriptknda;\012sub viramaknda' naknda' by nasubscriptknda;\012sub viramaknda' ngaknda' by ngasubscriptknda;\012sub viramaknda' nnaknda' by nnasubscriptknda;\012sub viramaknda' nyaknda' by nyasubscriptknda;\012sub viramaknda' paknda' by pasubscriptknda;\012sub viramaknda' phaknda' by phasubscriptknda;\012sub viramaknda' phanuktaknda' by phanuktasubscriptknda;\012sub viramaknda' raknda' by rasubscriptknda;\012sub viramaknda' rraknda' by rrasubscriptknda;\012sub viramaknda' saknda' by sasubscriptknda;\012sub viramaknda' shaknda' by shasubscriptknda;\012sub viramaknda' ssaknda' by ssasubscriptknda;\012sub viramaknda' taknda' by tasubscriptknda;\012sub viramaknda' thaknda' by thasubscriptknda;\012sub viramaknda' ttaknda' by ttasubscriptknda;\012sub viramaknda' tthaknda' by tthasubscriptknda;\012sub viramaknda' vaknda' by vasubscriptknda;\012sub viramaknda' yaknda' by yasubscriptknda;\012";
 name = blwf;
 },
 {
@@ -60548,8 +60548,7 @@ nodes = (
 "217 326 CURVE",
 "218 313 OFFCURVE",
 "225 295 OFFCURVE",
-"225 295 CURVE",
-"225 295 LINE"
+"225 295 CURVE"
 );
 },
 {
@@ -60772,8 +60771,7 @@ nodes = (
 "336 217 CURVE",
 "312 229 OFFCURVE",
 "288 239 OFFCURVE",
-"281 243 CURVE",
-"281 243 LINE"
+"281 243 CURVE"
 );
 }
 );
@@ -60834,8 +60832,7 @@ nodes = (
 "233 334 CURVE",
 "233 334 OFFCURVE",
 "265 312 OFFCURVE",
-"265 312 CURVE",
-"265 312 LINE"
+"265 312 CURVE"
 );
 },
 {
@@ -61058,8 +61055,7 @@ nodes = (
 "388 259 CURVE",
 "361 276 OFFCURVE",
 "331 292 OFFCURVE",
-"327 295 CURVE",
-"327 295 LINE"
+"327 295 CURVE"
 );
 }
 );
@@ -61120,8 +61116,7 @@ nodes = (
 "306 368 CURVE",
 "302 367 OFFCURVE",
 "309 325 OFFCURVE",
-"309 325 CURVE",
-"309 325 LINE"
+"309 325 CURVE"
 );
 },
 {
@@ -61344,8 +61339,7 @@ nodes = (
 "455 288 CURVE",
 "427 309 OFFCURVE",
 "386 325 OFFCURVE",
-"384 326 CURVE",
-"384 326 LINE"
+"384 326 CURVE"
 );
 }
 );
@@ -61406,8 +61400,7 @@ nodes = (
 "383 381 CURVE",
 "378 384 OFFCURVE",
 "373 387 OFFCURVE",
-"372 387 CURVE",
-"372 387 LINE"
+"372 387 CURVE"
 );
 },
 {
@@ -61630,8 +61623,7 @@ nodes = (
 "516 318 CURVE",
 "486 342 OFFCURVE",
 "435 358 OFFCURVE",
-"434 358 CURVE",
-"434 358 LINE"
+"434 358 CURVE"
 );
 }
 );
@@ -61692,8 +61684,7 @@ nodes = (
 "165 326 CURVE",
 "166 312 OFFCURVE",
 "169 297 OFFCURVE",
-"169 295 CURVE",
-"169 295 LINE"
+"169 295 CURVE"
 );
 },
 {
@@ -61916,8 +61907,7 @@ nodes = (
 "261 218 CURVE",
 "242 230 OFFCURVE",
 "223 240 OFFCURVE",
-"219 244 CURVE",
-"219 244 LINE"
+"219 244 CURVE"
 );
 }
 );
@@ -61978,8 +61968,7 @@ nodes = (
 "180 332 CURVE",
 "180 332 OFFCURVE",
 "208 312 OFFCURVE",
-"208 312 CURVE",
-"208 312 LINE"
+"208 312 CURVE"
 );
 },
 {
@@ -62202,8 +62191,7 @@ nodes = (
 "311 254 CURVE",
 "289 272 OFFCURVE",
 "265 288 OFFCURVE",
-"262 290 CURVE",
-"262 290 LINE"
+"262 290 CURVE"
 );
 }
 );
@@ -62264,8 +62252,7 @@ nodes = (
 "305 386 CURVE",
 "303 387 OFFCURVE",
 "287 350 OFFCURVE",
-"287 350 CURVE",
-"287 350 LINE"
+"287 350 CURVE"
 );
 },
 {
@@ -62488,8 +62475,7 @@ nodes = (
 "423 311 CURVE",
 "397 335 OFFCURVE",
 "354 354 OFFCURVE",
-"353 355 CURVE",
-"353 355 LINE"
+"353 355 CURVE"
 );
 }
 );

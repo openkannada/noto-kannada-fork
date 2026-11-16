@@ -7,10 +7,16 @@ This is a working fork of [notofonts/kannada](https://github.com/notofonts/kanna
 | Change | Files | Upstream issue |
 |---|---|---|
 | ರೃ (U+0CB0 U+0CC3) stays ra + vocalic R sign; it was drawn as ಋ with a reph | Sans `ContextualGSUB12`, `SingleSubstitution13`; Serif `ra_rVocalic_kannada`, `swap_Ra_rVocalic` | notofonts/kannada#61 |
-| A ZWNJ before the virama (ರ‌್ಯ) blocks the subscript; ZWJ still forms it | Sans and Serif `blwf` | harfbuzz/harfbuzz#2018 |
+| In new-order shaping (`knd2`), a ZWNJ right after a consonant and before the virama (ರ‌್ಯ) blocks the subscript; ZWJ still forms it | Sans and Serif `blwf` | harfbuzz/harfbuzz#2018 |
 | U+0CDC KANNADA ARCHAIC SHRII, drafted in every master | `archaicshriiknda` (Sans), `archaicShrii_kannada` (Serif) | Unicode 17.0, L2/22-006 |
 
-The U+0CDC outlines are drafts. Light and Regular pass every automated gate; the heavy masters (Sans SemiBold, Bold, Condensed Bold; Serif Bold) need a designer.
+Notes on the ZWNJ change:
+
+- HarfBuzz moves most vowel signs in front of the ZWNJ (ಕ‌್ಕಾ). The rule then does not apply, and the conjunct forms as before; blocking it there would put the sign on the first consonant. ೃ and ೄ stay after the cluster, so there the ZWNJ gives an explicit virama.
+- Old-order shaping (`knda`) is unchanged: Serif `blwf_knda` still forms the subscript after ZWNJ.
+- In Serif, ಕ‌್ಷ and ಜ‌್ಞ still form the ಕ್ಷ and ಜ್ಞ ligatures, because `Akhn_knd2_2` skips the joiner; Sans shows an explicit virama.
+
+The U+0CDC outlines are drafts. See "U+0CDC gate results" below for which instances pass the automated gates.
 
 ## Names
 
