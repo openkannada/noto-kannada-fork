@@ -1,6 +1,6 @@
 # Noto Kannada
 
-This is a fork of [notofonts/kannada](https://github.com/notofonts/kannada) with Kannada fixes; see [FORK.md](FORK.md). Upstream's README follows, up to the last 2 paragraphs, which are the fork's.
+This is a fork of [notofonts/kannada](https://github.com/notofonts/kannada) with Kannada fixes; see [FORK.md](FORK.md). Fonts built from it are distributed as Neha Sans and Neha Serif, based on Noto Sans Kannada and Noto Serif Kannada by Google. Upstream's README follows, up to the last 2 paragraphs, which are the fork's.
 
 [![][Fontbakery]](https://notofonts.github.io/kannada/fontbakery/fontbakery-report.html)
 [![][Universal]](https://notofonts.github.io/kannada/fontbakery/fontbakery-report.html)

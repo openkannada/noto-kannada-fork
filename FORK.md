@@ -15,16 +15,27 @@ The U+0CDC outlines are drafts. See "U+0CDC gate results" below for which instan
 
 ## Names
 
-The SIL Open Font License of this project lists no Reserved Font Name, so the license does not require a rename. "Noto" is a trademark of Google, so a build distributed from this fork must use another family name. The sources keep the Noto names so that each change can go upstream as is.
+Fonts built from this fork are distributed as **Neha Sans**, from Noto Sans Kannada, and **Neha Serif**, from Noto Serif Kannada. "Noto" is a trademark of Google, so no distributed file may use it as a name. The SIL Open Font License of this project lists no Reserved Font Name. The sources keep the Noto names so that each change can go upstream as is; `tools/rename.py` renames the built fonts with the names in `rename.toml`:
 
-Until a build step gives the fonts another family name, this fork distributes no font files: it has no releases and commits no binaries, and the upstream release workflow is disabled. Fork CI builds the fonts only to test them.
+- family Neha Sans or Neha Serif, PostScript names `NehaSans-Regular` and so on, files `NehaSans[wdth,wght].ttf` and `NehaSerif[wght].ttf`;
+- version 1.000, vendor ID `NONE` in place of Google's `GOOG`, and a new unique ID;
+- the upstream copyright line kept, with "; Copyright 2026 The Open Kannada Authors" added on the same line; the designer and OFL records kept; the record "Noto is a trademark of Google Inc." removed;
+- a description that credits the source ("Based on Noto Sans Kannada by Google") and says the font is named for Neha Prasad, co-founder of Open Kannada.
+
+The tool refuses to write a font that still has "Noto" in any name record other than the copyright and the description. `tests/test_rename.py` checks all of this, and that each renamed font shapes exactly like the build it comes from.
+
+Only renamed fonts leave this repository. The fork has no releases yet and commits no binaries, and the upstream release workflow is disabled.
 
 ## Build and test
 
     uv sync --group build
     uv run fontmake -g sources/NotoSansKannada.glyphs -o variable --output-dir build/sans --no-production-names
     uv run fontmake -g sources/NotoSerifKannada.glyphs -o variable --output-dir build/serif --no-production-names
+    uv run python tools/rename.py sans build/sans/NotoSansKannada-VF.ttf dist/
+    uv run python tools/rename.py serif build/serif/NotoSerifKannada-VF.ttf dist/
     uv run pytest
+
+`dist/` then holds `NehaSans[wdth,wght].ttf` and `NehaSerif[wght].ttf`. The fontmake build has only the glyphs in these sources; the upstream release, built with gftools, also merges in Latin glyphs from Noto Sans.
 
 The upstream workflow `Build, QA, Release` is disabled in this fork; `Fork CI` builds and tests instead.
 

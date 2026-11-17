@@ -19,6 +19,10 @@ jobs:
         run: |
           uv run fontmake -g sources/NotoSansKannada.glyphs -o variable --output-dir build/sans --no-production-names
           uv run fontmake -g sources/NotoSerifKannada.glyphs -o variable --output-dir build/serif --no-production-names
-      - run: uv run ruff check tests
-      - run: uv run ruff format --check tests
+      - name: Rename the built fonts
+        run: |
+          uv run python tools/rename.py sans build/sans/NotoSansKannada-VF.ttf dist/
+          uv run python tools/rename.py serif build/serif/NotoSerifKannada-VF.ttf dist/
+      - run: uv run ruff check tests tools
+      - run: uv run ruff format --check tests tools
       - run: uv run pytest -q
