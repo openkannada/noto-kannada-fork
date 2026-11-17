@@ -1,6 +1,6 @@
 # Drafts for upstream
 
-Texts for Prasad to send, or not. Neither has been submitted. Each pull request should carry only its own source change, cut from this fork's diff.
+Draft texts for upstream Noto. Neither has been submitted. Each pull request should carry only its own source change, cut from this fork's diff.
 
 | File | Where it would go |
 |---|---|
