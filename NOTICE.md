@@ -8,7 +8,7 @@ This repository is a fork of [notofonts/kannada](https://github.com/notofonts/ka
 | Noto Serif Kannada | The Noto Project Authors; designed by Universal Thirst, Indian Type Foundry and the Monotype design team | OFL-1.1, no Reserved Font Name | `sources/NotoSerifKannada.glyphs` and its config |
 | The Noto build scripts, workflow and documentation | The Noto Project Authors | OFL-1.1 (upstream ships no separate license for them) | `scripts/`, `Makefile`, `.github/workflows/build.yaml`, `documentation/`, `README.md` apart from the fork's paragraphs at its top and bottom |
 
-"Noto" is a trademark of Google, and the fonts' own trademark field says so. Fonts built from this fork are distributed as Neha Sans and Neha Serif. See [FORK.md](FORK.md).
+"Noto" is a trademark of Google, and the upstream fonts' trademark field says so. Fonts built from this fork are distributed as Neha Sans and Neha Serif. See [FORK.md](FORK.md).
 
 ## What is licensed how
 

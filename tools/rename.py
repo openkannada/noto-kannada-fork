@@ -13,6 +13,7 @@ description, which credit it.
 
 from __future__ import annotations
 
+import argparse
 import sys
 import tomllib
 from dataclasses import dataclass
@@ -21,19 +22,20 @@ from pathlib import Path
 from fontTools.ttLib import TTFont
 
 CONFIG = Path(__file__).parent.parent / "rename.toml"
+STYLES = ("sans", "serif")
 
-COPYRIGHT, UNIQUE_ID, VERSION, TRADEMARK, MANUFACTURER, DESCRIPTION, VENDOR_URL = (
-    0,
-    3,
-    5,
-    7,
-    8,
-    10,
-    11,
-)
+COPYRIGHT = 0
+FAMILY = 1
+UNIQUE_ID = 3
+VERSION = 5
+POSTSCRIPT = 6
+TRADEMARK = 7
+MANUFACTURER = 8
+DESCRIPTION = 10
+VENDOR_URL = 11
 # Records that may name the upstream font: they credit it.
 CREDITS = {COPYRIGHT, DESCRIPTION}
-UPSTREAM_MARK = "Noto"
+UPSTREAM_MARK = "noto"
 
 
 @dataclass(frozen=True)
@@ -47,6 +49,10 @@ class Names:
     manufacturer: str
     vendor_url: str
 
+    def __post_init__(self):
+        if len(self.vendor_id) != 4 or not self.vendor_id.isascii():
+            raise ValueError(f"vendor_id must be 4 ASCII characters: {self.vendor_id!r}")
+
     @property
     def upstream_ps(self) -> str:
         return self.upstream.replace(" ", "")
@@ -58,35 +64,40 @@ class Names:
 
 def load(style: str, config: Path = CONFIG) -> Names:
     data = tomllib.loads(config.read_text())
-    keys = ("version", "vendor_id", "copyright", "manufacturer", "vendor_url")
-    return Names(**data[style], **{k: data[k] for k in keys})
+    shared = ("version", "vendor_id", "copyright", "manufacturer", "vendor_url")
+    return Names(**data[style], **{k: data[k] for k in shared})
 
 
-class UpstreamNameLeft(ValueError):
+class RenameError(ValueError):
     pass
 
 
 def rename(font: TTFont, names: Names) -> TTFont:
     """Rename the font in place and return it."""
     table = font["name"]
-    for record in list(table.names):
+    if table.getDebugName(FAMILY) != names.upstream:
+        raise RenameError(
+            f"family is {table.getDebugName(FAMILY)!r}, expected {names.upstream!r}; "
+            "already renamed, or the wrong style"
+        )
+    table.removeNames(nameID=TRADEMARK)
+    fixed = {
+        VERSION: f"Version {names.version}",
+        MANUFACTURER: names.manufacturer,
+        DESCRIPTION: names.description,
+        VENDOR_URL: names.vendor_url,
+    }
+    for record in table.names:
         text = record.toUnicode()
-        if record.nameID == TRADEMARK:
-            table.removeNames(nameID=TRADEMARK)
-            continue
-        new = {
-            COPYRIGHT: f"{text}; {names.copyright}",
-            VERSION: f"Version {names.version}",
-            MANUFACTURER: names.manufacturer,
-            DESCRIPTION: names.description,
-            VENDOR_URL: names.vendor_url,
-        }.get(record.nameID)
-        if new is None:
-            new = text.replace(names.upstream, names.family).replace(
+        if record.nameID == COPYRIGHT:
+            record.string = f"{text}; {names.copyright}"
+        elif record.nameID in fixed:
+            record.string = fixed[record.nameID]
+        elif record.nameID != UNIQUE_ID:
+            record.string = text.replace(names.upstream, names.family).replace(
                 names.upstream_ps, names.family_ps
             )
-        record.string = new
-    unique = f"{names.version};{names.vendor_id};{table.getDebugName(6)}"
+    unique = f"{names.version};{names.vendor_id};{table.getDebugName(POSTSCRIPT)}"
     for record in table.names:
         if record.nameID == UNIQUE_ID:
             record.string = unique
@@ -94,7 +105,7 @@ def rename(font: TTFont, names: Names) -> TTFont:
     font["head"].fontRevision = float(names.version)
     left = leftovers(font)
     if left:
-        raise UpstreamNameLeft(f"upstream name still in name records {left}")
+        raise RenameError(f"upstream name still in name records {left}")
     return font
 
 
@@ -104,7 +115,7 @@ def leftovers(font: TTFont) -> list[int]:
         {
             r.nameID
             for r in font["name"].names
-            if r.nameID not in CREDITS and UPSTREAM_MARK.lower() in r.toUnicode().lower()
+            if r.nameID not in CREDITS and UPSTREAM_MARK in r.toUnicode().lower()
         }
     )
 
@@ -115,10 +126,17 @@ def file_name(font: TTFont, names: Names) -> str:
 
 
 def main(argv: list[str]) -> int:
-    style, source, out_dir = argv
-    names = load(style)
-    font = rename(TTFont(source), names)
-    out = Path(out_dir) / file_name(font, names)
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("style", choices=STYLES)
+    parser.add_argument("source", type=Path, help="variable font built from this fork")
+    parser.add_argument("out_dir", type=Path)
+    args = parser.parse_args(argv)
+    names = load(args.style)
+    try:
+        font = rename(TTFont(args.source), names)
+    except RenameError as error:
+        parser.exit(1, f"rename: {error}\n")
+    out = args.out_dir / file_name(font, names)
     out.parent.mkdir(parents=True, exist_ok=True)
     font.save(out)
     print(out)
