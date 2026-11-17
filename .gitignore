@@ -19,5 +19,6 @@ Thumbs.db
 
 # Fork builds and test environment
 build/
+dist/
 .venv/
 __pycache__/

@@ -1,0 +1,17 @@
+# Names for fonts built from this fork. "Noto" is a trademark of Google, so a distributed
+# build carries these names instead (tools/rename.py).
+version = "1.000"
+vendor_id = "NONE"
+copyright = "Copyright 2026 The Open Kannada Authors"
+manufacturer = "The Open Kannada Authors"
+vendor_url = "https://github.com/openkannada"
+
+[sans]
+upstream = "Noto Sans Kannada"
+family = "Neha Sans"
+description = "Based on Noto Sans Kannada by Google, designed by Jelle Bosma and the Monotype design team. Named for Neha Prasad, co-founder of Open Kannada."
+
+[serif]
+upstream = "Noto Serif Kannada"
+family = "Neha Serif"
+description = "Based on Noto Serif Kannada by Google, designed by Universal Thirst, Indian Type Foundry and the Monotype design team. Named for Neha Prasad, co-founder of Open Kannada."
