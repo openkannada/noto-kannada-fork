@@ -1,5 +1,7 @@
 # Noto Kannada
 
+This is a fork of [notofonts/kannada](https://github.com/notofonts/kannada) with Kannada fixes; see [FORK.md](FORK.md). The rest of this README is upstream's.
+
 [![][Fontbakery]](https://notofonts.github.io/kannada/fontbakery/fontbakery-report.html)
 [![][Universal]](https://notofonts.github.io/kannada/fontbakery/fontbakery-report.html)
 [![][GF Profile]](https://notofonts.github.io/kannada/fontbakery/fontbakery-report.html)
@@ -35,3 +37,7 @@ repository](https://github.com/notofonts/notofonts.github.io/blob/main/README.md
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is available with a FAQ at
 https://scripts.sil.org/OFL
+
+The tests and configuration written for this fork are under MIT OR Apache-2.0. [NOTICE.md](NOTICE.md) credits the upstream authors and lists which files are under which license. [CONTRIBUTING.md](CONTRIBUTING.md) explains the sign-off.
+
+Part of [Open Kannada](https://github.com/openkannada), free and open-source tools that make Kannada work properly on computers.

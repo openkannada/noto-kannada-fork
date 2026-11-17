@@ -2,6 +2,7 @@
 name = "noto-kannada-fork-tests"
 version = "0"
 description = "Shaping tests for the Kannada fixes in this fork"
+license = "MIT OR Apache-2.0"
 requires-python = ">=3.12"
 dependencies = ["fonttools==4.68.0", "uharfbuzz==0.57.0"]
 

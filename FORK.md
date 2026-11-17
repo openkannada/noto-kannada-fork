@@ -15,7 +15,9 @@ The U+0CDC outlines are drafts. See "U+0CDC gate results" below for which instan
 
 ## Names
 
-The SIL Open Font License of this project lists no Reserved Font Name, so the license does not require a rename. "Noto" is a trademark of Google LLC, so a build distributed from this fork should use another family name. The sources keep the Noto names so that each change can go upstream as is.
+The SIL Open Font License of this project lists no Reserved Font Name, so the license does not require a rename. "Noto" is a trademark of Google, so a build distributed from this fork must use another family name. The sources keep the Noto names so that each change can go upstream as is.
+
+Until a build step gives the fonts another family name, this fork distributes no font files: it has no releases and commits no binaries, and the upstream release workflow is disabled. Fork CI builds the fonts only to test them.
 
 ## Build and test
 
