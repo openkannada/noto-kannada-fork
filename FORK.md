@@ -20,7 +20,7 @@ Fonts built from this fork are distributed as **Neha Sans**, from Noto Sans Kann
 - family Neha Sans or Neha Serif, PostScript names `NehaSans-Regular` and so on, files `NehaSans[wdth,wght].ttf` and `NehaSerif[wght].ttf`;
 - version 1.000, vendor ID `NONE` in place of Google's `GOOG`, and a new unique ID;
 - the upstream copyright line kept, with "; Copyright 2026 The Open Kannada Authors" added on the same line; the designer and OFL records kept; the record "Noto is a trademark of Google Inc." removed;
-- a description that credits the source ("Based on Noto Sans Kannada by Google") and says the font is named for Neha Prasad, co-founder of Open Kannada.
+- a description that credits the source ("Based on Noto Sans Kannada by Google") and says the font is named for Neha Prasad, a founding member of Open Kannada.
 
 The tool refuses to write a font that still has "Noto" in any name record other than the copyright and the description. `tests/test_rename.py` checks all of this, and that each renamed font shapes exactly like the build it comes from.
 
