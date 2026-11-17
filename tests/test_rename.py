@@ -60,6 +60,9 @@ def test_upstream_copyright_and_license_are_kept(pair):
 def test_description_credits_the_upstream_font(pair):
     names, _, font, _ = pair
     assert all(f"Based on {names.upstream} by Google" in s for s in records(font, 10))
+    assert all(
+        "Named for Neha Prasad, a founding member of Open Kannada." in s for s in records(font, 10)
+    )
 
 
 def test_name_records_fit_google_fonts_limits(pair):
