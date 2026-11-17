@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 The Open Kannada Authors
+# SPDX-License-Identifier: MIT OR Apache-2.0
 """Shaping tests for the Kannada fixes in this fork, run on both variable fonts."""
 
 import os
