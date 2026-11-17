@@ -4,8 +4,9 @@ This repository is a fork of [notofonts/kannada](https://github.com/notofonts/ka
 
 | Work | Authors | License | Used here |
 |---|---|---|---|
-| Noto Sans Kannada and Noto Serif Kannada | The Noto Project Authors; designed by the Monotype design team (Jelle Bosma) | OFL-1.1, no Reserved Font Name | The sources in `sources/`, and the rest of the repository apart from the files listed below |
-| The Noto build scripts and workflow | The Noto Project Authors (Simon Cozens) | As upstream | `scripts/`, `Makefile`, `.github/workflows/build.yaml` |
+| Noto Sans Kannada | The Noto Project Authors; designed by Jelle Bosma and the Monotype design team | OFL-1.1, no Reserved Font Name | `sources/NotoSansKannada.glyphs` and its config |
+| Noto Serif Kannada | The Noto Project Authors; designed by Universal Thirst, Indian Type Foundry and the Monotype design team | OFL-1.1, no Reserved Font Name | `sources/NotoSerifKannada.glyphs` and its config |
+| The Noto build scripts, workflow and documentation | The Noto Project Authors | OFL-1.1 (upstream ships no separate license for them) | `scripts/`, `Makefile`, `.github/workflows/build.yaml`, `documentation/`, `README.md` apart from the fork's paragraphs at its top and bottom |
 
 "Noto" is a trademark of Google, and the fonts' own trademark field says so. A font built from this fork and given to anyone must use another family name. See [FORK.md](FORK.md).
 
@@ -13,5 +14,6 @@ This repository is a fork of [notofonts/kannada](https://github.com/notofonts/ka
 
 | Files | License |
 |---|---|
-| The font sources and documentation | OFL-1.1, see [OFL.txt](OFL.txt) |
-| Tests and configuration written for this fork: `tests/`, `pyproject.toml`, `.github/workflows/fork-ci.yml` | MIT OR Apache-2.0, copyright The Open Kannada Authors, see [LICENSES](LICENSES) |
+| The font sources and upstream's files | OFL-1.1, see [OFL.txt](OFL.txt) |
+| Tests and configuration written for this fork: `tests/`, `pyproject.toml`, `uv.lock`, `.github/workflows/fork-ci.yml` | MIT OR Apache-2.0, copyright The Open Kannada Authors, see [LICENSES](LICENSES) |
+| Documents written for this fork: `FORK.md`, `NOTICE.md`, `CONTRIBUTING.md`, `drafts/` | CC BY 4.0, copyright The Open Kannada Authors, see [LICENSES/CC-BY-4.0.txt](LICENSES/CC-BY-4.0.txt) |

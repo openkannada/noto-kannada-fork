@@ -1,6 +1,6 @@
 # Noto Kannada
 
-This is a fork of [notofonts/kannada](https://github.com/notofonts/kannada) with Kannada fixes; see [FORK.md](FORK.md). The rest of this README is upstream's.
+This is a fork of [notofonts/kannada](https://github.com/notofonts/kannada) with Kannada fixes; see [FORK.md](FORK.md). Upstream's README follows, up to the last 2 paragraphs, which are the fork's.
 
 [![][Fontbakery]](https://notofonts.github.io/kannada/fontbakery/fontbakery-report.html)
 [![][Universal]](https://notofonts.github.io/kannada/fontbakery/fontbakery-report.html)
