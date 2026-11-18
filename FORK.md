@@ -39,6 +39,23 @@ Only renamed fonts leave this repository. The fork has no releases yet and commi
 
 The upstream workflow `Build, QA, Release` is disabled in this fork; `Fork CI` builds and tests instead.
 
+## Release build
+
+    uv sync --group build --group release
+    uv run python tools/release.py sans
+    uv run python tools/release.py serif
+    uv run python tools/check_release.py sans --fontspector path/to/fontspector
+
+`tools/release.py` copies the source without the Noto Sans Kannada UI instances, builds it with gftools builder (Google Fonts fixes, a variable font, static TTFs autohinted with ttfautohint, static OTFs), renames every font, and writes `dist/NehaSans/` and `dist/NehaSans-1.000.zip` with a `.sha256` file. The folder holds:
+
+- `variable/`, `ttf/`, `otf/`: the fonts;
+- `webfonts/`: WOFF2 of the variable font and of each static TTF;
+- `web/NehaSans-Kannada[wght].woff2`: the variable font at normal width, cut to Kannada, for websites;
+- `specimen.html`: 1 page with the sample text, the new letters and shaping stress tests;
+- `OFL.txt`, `FONTLOG.txt`, `SHA256SUMS`.
+
+`tools/check_release.py` runs fontspector with the Google Fonts profile, Shaperglot for `kn_Knda`, and `tests/test_kannada_fixes.py` on the released variable font. `release/known-fails.toml` lists the fontspector checks that fail for reasons outside this release, with the reason; any other failure fails the check. The `Release build` workflow does all of this for both styles and keeps the zip, its checksum and the reports as workflow artifacts.
+
 ## U+0CDC gate results
 
 `fontqa gate --chars 0CDC` (kannadi) on every named instance of the variable fonts built from this fork:

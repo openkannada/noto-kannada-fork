@@ -9,6 +9,10 @@ dependencies = ["fonttools==4.68.0", "uharfbuzz==0.57.0"]
 [dependency-groups]
 dev = ["pytest==9.2.0", "ruff==0.17.5"]
 build = ["fontmake==3.12.2"]
+release = [
+    "brotli==1.2.1",
+    "gftools==0.10.8",
+]
 
 [tool.uv]
 package = false
@@ -21,3 +25,6 @@ select = ["E", "F", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["check_release", "release", "rename", "specimen", "test_kannada_fixes"]

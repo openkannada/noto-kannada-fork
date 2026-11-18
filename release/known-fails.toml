@@ -1,0 +1,66 @@
+# fontspector checks (Google Fonts profile) that fail on the release fonts for reasons outside
+# this release. Each entry lists the failure codes it covers, optionally the files (glob
+# patterns) it covers, and the reason; tools/check_release.py fails on anything else.
+
+[sans."googlefonts/glyph_coverage"]
+codes = ["missing-codepoints"]
+reason = "The fonts cover Kannada only; the Google Fonts glyph sets require Latin."
+
+[sans."googlefonts/glyphsets/shape_languages"]
+codes = ["no-glyphset-supported"]
+reason = "Follows from glyph_coverage: no Google Fonts glyph set is 80% covered."
+
+[sans."googlefonts/render_own_name"]
+codes = ["render-own-name"]
+reason = "The family name is in Latin letters, which the fonts do not have."
+
+[sans."googlefonts/repo/dirname_matches_nameid_1"]
+codes = ["mismatch"]
+reason = "Checks the google/fonts repository layout, which this repository does not use."
+
+[sans."googlefonts/font_names"]
+codes = ["unsupported-style"]
+files = ["NehaSans-*Condensed*"]
+reason = "Google Fonts lists width variants as separate families. The static fonts keep the width in the style name (Condensed Bold) within 1 family, as Noto's static fonts do."
+
+[sans."name/family_and_style_max_length"]
+codes = ["nameid4-too-long"]
+files = [
+    "NehaSans-ExtraCondensedExtraLight.*",
+    "NehaSans-ExtraCondensedExtraBold.*",
+    "NehaSans-ExtraCondensedSemiBold.*",
+    "NehaSans-SemiCondensedExtraLight.*",
+    "NehaSans-SemiCondensedExtraBold.*",
+]
+reason = "5 static full names, such as Neha Sans ExtraCondensed ExtraLight, are 1 to 3 characters over the 32 that old versions of Microsoft Word show in full."
+
+[sans."hinting_impact"]
+codes = [""]
+files = ["*.otf"]
+reason = "fontspector reads the glyf table, which OTF (CFF) fonts do not have."
+
+[serif."googlefonts/glyph_coverage"]
+codes = ["missing-codepoints"]
+reason = "The fonts cover Kannada only; the Google Fonts glyph sets require Latin."
+
+[serif."googlefonts/glyphsets/shape_languages"]
+codes = ["no-glyphset-supported"]
+reason = "Follows from glyph_coverage: no Google Fonts glyph set is 80% covered."
+
+[serif."googlefonts/render_own_name"]
+codes = ["render-own-name"]
+reason = "The family name is in Latin letters, which the fonts do not have."
+
+[serif."googlefonts/repo/dirname_matches_nameid_1"]
+codes = ["mismatch"]
+reason = "Checks the google/fonts repository layout, which this repository does not use."
+
+[serif."hinting_impact"]
+codes = [""]
+files = ["*.otf"]
+reason = "fontspector reads the glyf table, which OTF (CFF) fonts do not have."
+
+[serif."opentype/hmtx_cff_num_glyphs"]
+codes = ["mismatch-number-of-glyphs-hmtx-cff"]
+files = ["*.otf"]
+reason = "The OTFs store the last 2 advance widths once, as the OpenType hmtx format allows; fontspector compares that count with the glyph count."
