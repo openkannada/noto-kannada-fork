@@ -153,3 +153,50 @@ def test_vendor_id_must_be_4_characters():
     names = rename.load("sans")
     with pytest.raises(ValueError):
         rename.Names(**{**vars(names), "vendor_id": "OPENK"})
+
+
+def test_cff_names_follow_the_name_table():
+    # OTF builds repeat the font names, and the trademark notice, in the CFF table.
+    from fontTools.fontBuilder import FontBuilder
+    from fontTools.pens.t2CharStringPen import T2CharStringPen
+
+    fb = FontBuilder(1000, isTTF=False)
+    fb.setupGlyphOrder([".notdef"])
+    fb.setupCharacterMap({})
+    pen = T2CharStringPen(500, None)
+    fb.setupCFF(
+        "NotoSansKannada-Bold",
+        {
+            "FullName": "Noto Sans Kannada Bold",
+            "FamilyName": "Noto Sans Kannada",
+            "Notice": "Noto is a trademark of Google Inc.",
+            "Copyright": "Copyright 2022 The Noto Project Authors",
+        },
+        {".notdef": pen.getCharString()},
+        {},
+    )
+    fb.setupHorizontalMetrics({".notdef": (500, 0)})
+    fb.setupHorizontalHeader()
+    fb.setupOS2()
+    fb.setupPost()
+    fb.setupNameTable(
+        {
+            "copyright": "Copyright 2022 The Noto Project Authors",
+            "familyName": "Noto Sans Kannada",
+            "styleName": "Bold",
+            "fullName": "Noto Sans Kannada Bold",
+            "psName": "NotoSansKannada-Bold",
+            "trademark": "Noto is a trademark of Google Inc.",
+        }
+    )
+    assert {"CFF FontName", "CFF FullName", "CFF FamilyName", "CFF Notice"} <= set(
+        rename.leftovers(fb.font)
+    )
+    font = rename.rename(fb.font, rename.load("sans"))
+    top = font["CFF "].cff.topDictIndex[0]
+    assert font["CFF "].cff.fontNames == ["NehaSans-Bold"]
+    assert (top.FullName, top.FamilyName) == ("Neha Sans Bold", "Neha Sans")
+    assert not hasattr(top, "Notice")
+    assert top.Copyright == "Copyright 2022 The Noto Project Authors"
+    assert rename.leftovers(font) == []
+    assert rename.file_name(font, rename.load("sans"), ".otf") == "NehaSans-Bold.otf"

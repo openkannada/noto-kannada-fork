@@ -28,6 +28,7 @@ COPYRIGHT = 0
 FAMILY = 1
 UNIQUE_ID = 3
 VERSION = 5
+FULL_NAME = 4
 POSTSCRIPT = 6
 TRADEMARK = 7
 MANUFACTURER = 8
@@ -105,21 +106,41 @@ def rename(font: TTFont, names: Names) -> TTFont:
             record.string = unique
     font["OS/2"].achVendID = names.vendor_id
     font["head"].fontRevision = float(names.version)
+    if "CFF " in font:
+        _rename_cff(font, table)
     left = leftovers(font)
     if left:
-        raise RenameError(f"upstream name still in name records {left}")
+        raise RenameError(f"upstream name still in {left}")
     return font
 
 
-def leftovers(font: TTFont) -> list[int]:
-    """Name IDs outside the credits that still carry the upstream mark."""
-    return sorted(
-        {
-            r.nameID
-            for r in font["name"].names
-            if r.nameID not in CREDITS and UPSTREAM_MARK in r.toUnicode().lower()
-        }
-    )
+def _rename_cff(font: TTFont, table) -> None:
+    """A CFF font repeats its names in the CFF table; they follow the name table. The CFF
+    Copyright field keeps the upstream credit, as name ID 0 does."""
+    cff = font["CFF "].cff
+    top = cff.topDictIndex[0]
+    cff.fontNames = [table.getDebugName(POSTSCRIPT)]
+    top.FullName = table.getDebugName(FULL_NAME)
+    top.FamilyName = table.getDebugName(TYPOGRAPHIC_FAMILY) or table.getDebugName(FAMILY)
+    if hasattr(top, "Notice"):  # holds the upstream trademark statement
+        del top.Notice
+        top.rawDict.pop("Notice", None)
+
+
+def leftovers(font: TTFont) -> list[str]:
+    """Where the upstream mark is left outside the credits: name IDs and CFF fields."""
+    found = {
+        f"name {r.nameID}"
+        for r in font["name"].names
+        if r.nameID not in CREDITS and UPSTREAM_MARK in r.toUnicode().lower()
+    }
+    if "CFF " in font:
+        cff = font["CFF "].cff
+        top = cff.topDictIndex[0]
+        fields = {"FontName": " ".join(cff.fontNames)}
+        fields |= {k: str(getattr(top, k, "")) for k in ("FullName", "FamilyName", "Notice")}
+        found |= {f"CFF {k}" for k, v in fields.items() if UPSTREAM_MARK in v.lower()}
+    return sorted(found)
 
 
 def file_name(font: TTFont, names: Names, suffix: str = ".ttf") -> str:

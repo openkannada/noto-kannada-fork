@@ -82,10 +82,23 @@ def renamed(built: Path, names: rename.Names, out: Path, kind: str) -> list[Path
         target = out / kind / rename.file_name(font, names, path.suffix)
         target.parent.mkdir(parents=True, exist_ok=True)
         font.save(target)
+        unrenamed(target)
         written.append(target)
     if not written:
         raise SystemExit(f"no fonts in {built}")
     return written
+
+
+def unrenamed(path: Path) -> None:
+    """Fail if the upstream mark is left in the name or CFF fields, or in any other table."""
+    font = TTFont(path)
+    left = rename.leftovers(font)
+    for tag in sorted(set(font.keys()) - {"GlyphOrder", "name", "CFF "}):
+        data = font.getTableData(tag)
+        if any(m in data for m in (b"Noto", "Noto".encode("utf-16-be"))):
+            left.append(tag)
+    if left:
+        raise SystemExit(f"{path.name}: upstream name left in {left}")
 
 
 def woff2(font_path: Path, out_dir: Path) -> Path:
