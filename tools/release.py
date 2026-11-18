@@ -20,6 +20,7 @@ import shutil
 import subprocess
 import sys
 import zipfile
+from io import BytesIO
 from pathlib import Path
 
 import glyphsLib
@@ -100,7 +101,9 @@ def web_subset(variable: Path, out_dir: Path, names: rename.Names) -> Path:
     """The variable font at normal width, cut to Kannada, as WOFF2 for the site."""
     font = TTFont(variable)
     if any(a.axisTag == "wdth" for a in font["fvar"].axes):
-        font = instantiateVariableFont(font, {"wdth": 100}, updateFontNames=False)
+        pinned = BytesIO()
+        instantiateVariableFont(font, {"wdth": 100}, updateFontNames=False).save(pinned)
+        font = TTFont(BytesIO(pinned.getvalue()))  # the subsetter needs freshly loaded tables
     options = subset.Options()
     options.layout_features = ["*"]
     options.name_IDs = ["*"]

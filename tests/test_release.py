@@ -97,8 +97,9 @@ def test_specimen_fills_every_field_and_shows_the_new_letter(sans):
     page = specimen.write(out, names.family, names.version, "Based on X.", path).read_text()
     assert "{{" not in page
     assert f'url("webfonts/{path.stem}.woff2")' in page
-    assert "U+0CDC ARCHAIC SHRII" in page
-    assert "U+0CDD" not in page
+    cmap = TTFont(path).getBestCmap()
+    for cp, _, label in specimen.NEW_LETTERS:
+        assert (label in page) == (cp in cmap), label
     for fixed in ("ಹಲ್ಲೆಗಳಿಗೆ", "ತಿಳಿಯಪಡಿಸುವ", "ವ್ಯವಸ್ಥೆ", "ನೈಸರ್ಗಿಕಾಭಿವೃದ್ಧಿಗೂ"):
         assert fixed in page
 

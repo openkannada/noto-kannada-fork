@@ -11,6 +11,7 @@ from pathlib import Path
 from fontTools.ttLib import TTFont
 
 ROOT = Path(__file__).parent.parent
+JOINERS = "\u200c\u200d"
 TEMPLATE = ROOT / "specimen" / "template.html"
 SAMPLE = ROOT / "specimen" / "sample-kn.json"
 
@@ -60,7 +61,7 @@ def write(out: Path, family: str, version: str, credit: str, font_path: Path) ->
         "paragraphs": "\n".join(f"<p>{html.escape(p)}</p>" for p in sample["paragraphs"]),
         "sample_source": html.escape(sample["source"]),
         "new_letters": _new_letters(cmap),
-        "stress": "\n".join(_row(label, text) for label, text in STRESS),
+        "stress": "\n".join(_row(label, *_covered(text, cmap)) for label, text in STRESS),
     }
     page = TEMPLATE.read_text()
     for key, value in fields.items():
@@ -90,6 +91,24 @@ def _new_letters(cmap) -> str:
     return "\n".join(rows) or "<p>This family has none of the letters added since Unicode 14.</p>"
 
 
-def _row(label: str, text: str) -> str:
+def _covered(text: str, cmap) -> tuple[str, str]:
+    """The words of text that the font can draw, and the characters it lacks."""
+
+    def drawn(ch):
+        return ord(ch) in cmap or ch in JOINERS
+
+    words = text.split()
+    missing = sorted({ch for w in words for ch in w if not drawn(ch)})
+    kept = " ".join(w for w in words if all(drawn(ch) for ch in w))
+    note = (
+        "Not in this font: " + " ".join(f"U+{ord(ch):04X} {ch}" for ch in missing)
+        if missing
+        else ""
+    )
+    return kept, note
+
+
+def _row(label: str, text: str, note: str = "") -> str:
     heading, sample = html.escape(label), html.escape(text)
-    return f'<div class="row"><h3>{heading}</h3><p class="big">{sample}</p></div>'
+    extra = f'<p class="note">{html.escape(note)}</p>' if note else ""
+    return f'<div class="row"><h3>{heading}</h3><p class="big">{sample}</p>{extra}</div>'
