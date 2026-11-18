@@ -1,6 +1,6 @@
 # fontspector checks (Google Fonts profile) that fail on the release fonts for reasons outside
-# this release. Each entry lists the failure codes it covers and the reason;
-# tools/check_release.py fails on any other check or code.
+# this release. Each entry lists the failure codes it covers, optionally the files (glob
+# patterns) it covers, and the reason; tools/check_release.py fails on anything else.
 
 [sans."googlefonts/glyph_coverage"]
 codes = ["missing-codepoints"]
@@ -20,14 +20,23 @@ reason = "Checks the google/fonts repository layout, which this repository does 
 
 [sans."googlefonts/font_names"]
 codes = ["unsupported-style"]
+files = ["NehaSans-*Condensed*"]
 reason = "Google Fonts lists width variants as separate families. The static fonts keep the width in the style name (Condensed Bold) within 1 family, as Noto's static fonts do."
 
 [sans."name/family_and_style_max_length"]
 codes = ["nameid4-too-long"]
+files = [
+    "NehaSans-ExtraCondensedExtraLight.*",
+    "NehaSans-ExtraCondensedExtraBold.*",
+    "NehaSans-ExtraCondensedSemiBold.*",
+    "NehaSans-SemiCondensedExtraLight.*",
+    "NehaSans-SemiCondensedExtraBold.*",
+]
 reason = "5 static full names, such as Neha Sans ExtraCondensed ExtraLight, are 1 to 3 characters over the 32 that old versions of Microsoft Word show in full."
 
 [sans."hinting_impact"]
 codes = [""]
+files = ["*.otf"]
 reason = "fontspector reads the glyf table, which OTF (CFF) fonts do not have."
 
 [serif."googlefonts/glyph_coverage"]
@@ -48,8 +57,10 @@ reason = "Checks the google/fonts repository layout, which this repository does 
 
 [serif."hinting_impact"]
 codes = [""]
+files = ["*.otf"]
 reason = "fontspector reads the glyf table, which OTF (CFF) fonts do not have."
 
 [serif."opentype/hmtx_cff_num_glyphs"]
 codes = ["mismatch-number-of-glyphs-hmtx-cff"]
+files = ["*.otf"]
 reason = "The OTFs store the last 2 advance widths once, as the OpenType hmtx format allows; fontspector compares that count with the glyph count."

@@ -16,6 +16,7 @@ from fontTools.varLib.instancer import instantiateVariableFont
 from test_kannada_fixes import BUILD, CONSONANTS, FONTS, VIRAMA
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "tools"))
+import check_release  # noqa: E402
 import release  # noqa: E402
 import rename  # noqa: E402
 import specimen  # noqa: E402
@@ -150,3 +151,15 @@ def test_archive_bytes_depend_only_on_the_files(tmp_path, monkeypatch):
         (folder / "x.txt").write_text("x")
         digests.append(hashlib.sha256(release.archive(folder, "1").read_bytes()).hexdigest())
     assert digests[0] == digests[1]
+
+
+def test_known_failures_match_by_check_code_and_file():
+    known = {
+        "hinting_impact": {"codes": [""], "files": ["*.otf"], "reason": "r"},
+        "googlefonts/glyph_coverage": {"codes": ["missing-codepoints"], "reason": "r"},
+    }
+    assert check_release.is_known(("hinting_impact", "", "NehaSans-Bold.otf"), known)
+    assert not check_release.is_known(("hinting_impact", "", "NehaSans-Bold.ttf"), known)
+    assert check_release.is_known(("googlefonts/glyph_coverage", "missing-codepoints", ""), known)
+    assert not check_release.is_known(("googlefonts/glyph_coverage", "other-code", ""), known)
+    assert not check_release.is_known(("unlisted/check", "", "x.ttf"), known)
