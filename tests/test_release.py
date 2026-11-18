@@ -5,6 +5,7 @@ and the checksums. The build itself (gftools builder) runs in the release workfl
 
 import hashlib
 import sys
+from io import BytesIO
 from pathlib import Path
 
 import pytest
@@ -31,6 +32,13 @@ def sans(tmp_path_factory):
     path.parent.mkdir()
     font.save(path)
     return names, out, path
+
+
+def sfnt(font: TTFont) -> bytes:
+    font.flavor = None
+    data = BytesIO()
+    font.save(data)
+    return data.getvalue()
 
 
 def shape(data: bytes, text: str, variations: dict | None = None):
@@ -84,7 +92,7 @@ def test_web_subset_covers_kannada_and_shapes_like_the_full_font(sans, tmp_path)
     full_cmap = TTFont(path).getBestCmap()
     kannada = {cp for cp in full_cmap if 0x0C80 <= cp <= 0x0CFF}
     assert kannada <= set(font.getBestCmap())
-    full, cut = path.read_bytes(), web.read_bytes()
+    full, cut = path.read_bytes(), sfnt(font)  # HarfBuzz does not read WOFF2
     full_names, cut_names = TTFont(path).getGlyphOrder(), font.getGlyphOrder()
     for weight in (100, 400, 900):
         for text in SAMPLES:
