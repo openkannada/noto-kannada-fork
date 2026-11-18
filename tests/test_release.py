@@ -11,12 +11,12 @@ import pytest
 import uharfbuzz as hb
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
+
 from test_kannada_fixes import BUILD, CONSONANTS, FONTS, VIRAMA
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "tools"))
 import release  # noqa: E402
 import rename  # noqa: E402
-
 import specimen  # noqa: E402
 
 SAMPLES = ["೜", "ಕ್ಷ್ಮ್ಯ", "ಸ್ತ್ರೀ", "ರ್ಕೈ", "ಕೃಷ್ಣ", *(c + VIRAMA + "ರ" for c in CONSONANTS)]

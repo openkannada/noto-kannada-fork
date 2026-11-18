@@ -29,7 +29,6 @@ from fontTools.varLib.instancer import instantiateVariableFont
 
 sys.path.insert(0, str(Path(__file__).parent))
 import rename  # noqa: E402
-
 import specimen  # noqa: E402
 
 ROOT = Path(__file__).parent.parent

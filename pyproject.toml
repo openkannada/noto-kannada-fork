@@ -25,3 +25,6 @@ select = ["E", "F", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["check_release", "release", "rename", "specimen", "test_kannada_fixes"]

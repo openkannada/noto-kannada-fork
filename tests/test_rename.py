@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 from fontTools.ttLib import TTFont
 from fontTools.ttLib.tables._f_v_a_r import NamedInstance
+
 from test_kannada_fixes import BUILD, FONTS
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "tools"))
