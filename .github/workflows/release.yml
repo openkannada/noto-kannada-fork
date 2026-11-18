@@ -18,10 +18,14 @@ jobs:
         style: [sans, serif]
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - uses: astral-sh/setup-uv@v10.3.3
       - run: uv sync --locked --group build --group release
       - name: Build, rename and package
-        run: uv run python tools/release.py ${{ matrix.style }}
+        run: |
+          export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct ${{ github.event.pull_request.head.sha || github.sha }})
+          uv run python tools/release.py ${{ matrix.style }}
       - name: Install fontspector 1.9.1
         run: |
           curl -sSfLo fontspector.tar.gz https://github.com/fonttools/fontspector/releases/download/fontspector-v1.9.1/fontspector-1.9.1-x86_64-unknown-linux-gnu.tar.gz

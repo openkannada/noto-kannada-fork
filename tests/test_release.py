@@ -20,6 +20,12 @@ import release  # noqa: E402
 import rename  # noqa: E402
 import specimen  # noqa: E402
 
+TYPOS = {
+    "ಹಲ್ಲೆಗಳಗೆ": "ಹಲ್ಲೆಗಳಿಗೆ",
+    "ತಿಳಯಪಡಿಸುವ": "ತಿಳಿಯಪಡಿಸುವ",
+    "ವ್ಯವಸ್ಧೆ": "ವ್ಯವಸ್ಥೆ",
+    "ನೈಸರ್ಗಿಕಾಭಿವೃದ್ದಿಗೂ": "ನೈಸರ್ಗಿಕಾಭಿವೃದ್ಧಿಗೂ",
+}
 SAMPLES = ["೜", "ಕ್ಷ್ಮ್ಯ", "ಸ್ತ್ರೀ", "ರ್ಕೈ", "ಕೃಷ್ಣ", *(c + VIRAMA + "ರ" for c in CONSONANTS)]
 
 
@@ -56,6 +62,7 @@ def shape(data: bytes, text: str, variations: dict | None = None):
 
 
 def test_static_fonts_are_renamed_by_postscript_name(tmp_path):
+    # The file is named Bold but the instance keeps the default PostScript name, Regular.
     names = rename.load("sans")
     static = instantiateVariableFont(
         TTFont(BUILD / FONTS["sans"]), {"wght": 700, "wdth": 100}, updateFontNames=False
@@ -110,8 +117,9 @@ def test_specimen_fills_every_field_and_shows_the_new_letter(sans):
     cmap = TTFont(path).getBestCmap()
     for cp, _, label in specimen.NEW_LETTERS:
         assert (label in page) == (cp in cmap), label
-    for fixed in ("ಹಲ್ಲೆಗಳಿಗೆ", "ತಿಳಿಯಪಡಿಸುವ", "ವ್ಯವಸ್ಥೆ", "ನೈಸರ್ಗಿಕಾಭಿವೃದ್ಧಿಗೂ"):
-        assert fixed in page
+    text = page.split("<footer>")[0]  # the footer names the typos it fixed
+    for typo, fixed in TYPOS.items():
+        assert fixed in text and typo not in text
 
 
 def test_checksums_list_every_file(tmp_path):
@@ -123,3 +131,24 @@ def test_checksums_list_every_file(tmp_path):
         f"{hashlib.sha256(b'a').hexdigest()}  a.txt",
         f"{hashlib.sha256(b'b').hexdigest()}  sub/b.txt",
     ]
+
+
+def test_extra_light_otf_gets_weight_class_275():
+    font = TTFont(BUILD / FONTS["sans"])
+    font["OS/2"].usWeightClass = 200
+    release.cff_weight_class(font)
+    assert font["OS/2"].usWeightClass == 275
+    font["OS/2"].usWeightClass = 300
+    release.cff_weight_class(font)
+    assert font["OS/2"].usWeightClass == 300
+
+
+def test_archive_bytes_depend_only_on_the_files(tmp_path, monkeypatch):
+    monkeypatch.setenv("SOURCE_DATE_EPOCH", "1795000000")
+    digests = []
+    for name in ("a", "b"):
+        folder = tmp_path / name / "Family"
+        folder.mkdir(parents=True)
+        (folder / "x.txt").write_text("x")
+        digests.append(hashlib.sha256(release.archive(folder, "1").read_bytes()).hexdigest())
+    assert digests[0] == digests[1]

@@ -16,9 +16,11 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import os
 import shutil
 import subprocess
 import sys
+import time
 import zipfile
 from io import BytesIO
 from pathlib import Path
@@ -79,6 +81,8 @@ def renamed(built: Path, names: rename.Names, out: Path, kind: str) -> list[Path
     written = []
     for path in sorted(built.glob("*.[ot]tf")):
         font = rename.rename(TTFont(path), names)
+        if "CFF " in font:
+            cff_weight_class(font)
         target = out / kind / rename.file_name(font, names, path.suffix)
         target.parent.mkdir(parents=True, exist_ok=True)
         font.save(target)
@@ -89,12 +93,23 @@ def renamed(built: Path, names: rename.Names, out: Path, kind: str) -> list[Path
     return written
 
 
+def cff_weight_class(font: TTFont) -> None:
+    """Windows GDI draws CFF fonts lighter than weight class 250 as bold, so an ExtraLight
+    OTF says 275, as Google Fonts asks."""
+    if font["OS/2"].usWeightClass == 200:
+        font["OS/2"].usWeightClass = 275
+
+
 def unrenamed(path: Path) -> None:
-    """Fail if the upstream mark is left in the name or CFF fields, or in any other table."""
+    """Fail if the upstream mark is left in the name or CFF fields, or in any table outside
+    the copyright credit."""
     font = TTFont(path)
     left = rename.leftovers(font)
-    for tag in sorted(set(font.keys()) - {"GlyphOrder", "name", "CFF "}):
+    for tag in sorted(set(font.keys()) - {"GlyphOrder", "name"}):
         data = font.getTableData(tag)
+        if tag == "CFF ":
+            copyright = getattr(font["CFF "].cff.topDictIndex[0], "Copyright", "")
+            data = data.replace(copyright.encode("latin-1", "replace"), b"")
         if any(m in data for m in (b"Noto", "Noto".encode("utf-16-be"))):
             left.append(tag)
     if left:
@@ -146,11 +161,18 @@ def checksums(folder: Path) -> Path:
 
 
 def archive(folder: Path, version: str) -> Path:
+    """A zip whose bytes depend only on the files: entries in name order, with the time
+    from SOURCE_DATE_EPOCH (or 1980-01-01)."""
+    epoch = int(os.environ.get("SOURCE_DATE_EPOCH", "315532800"))
+    stamp = time.gmtime(max(epoch, 315532800))[:6]
     target = folder.parent / f"{folder.name}-{version}.zip"
     with zipfile.ZipFile(target, "w", zipfile.ZIP_DEFLATED) as z:
         for p in sorted(folder.rglob("*")):
             if p.is_file():
-                z.write(p, p.relative_to(folder.parent).as_posix())
+                info = zipfile.ZipInfo(p.relative_to(folder.parent).as_posix(), stamp)
+                info.compress_type = zipfile.ZIP_DEFLATED
+                info.external_attr = 0o644 << 16
+                z.writestr(info, p.read_bytes())
     return target
 
 

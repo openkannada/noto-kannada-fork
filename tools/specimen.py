@@ -81,7 +81,7 @@ def _controls(axes) -> str:
             rows.append(
                 f'<label>{label} <output id="{tag}-value">{default:g}</output>'
                 f'<input type="range" data-axis="{tag}" min="{low:g}" max="{high:g}" '
-                f'value="{default:g}" step="1"></label>'
+                f'value="{default:g}" step="any"></label>'
             )
     return "\n".join(rows)
 

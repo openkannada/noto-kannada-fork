@@ -1,13 +1,18 @@
 # SPDX-FileCopyrightText: 2026 The Open Kannada Authors
 # SPDX-License-Identifier: MIT OR Apache-2.0
-"""Check the release files of 1 style: fontspector, shaperglot and this fork's shaping tests.
+"""Check the release files of 1 style: names, fontspector, Shaperglot and the shaping tests.
 
     uv run python tools/check_release.py sans --fontspector path/to/fontspector
 
-fontspector runs the Google Fonts profile on the variable and static TTFs. A FAIL, ERROR or
-FATAL fails this script unless release/known-fails.toml lists the check with a reason; a
-listed check that now passes is reported, so the list can shrink. Reports go to
-dist/checks/.
+- Every font in the release (TTF, OTF, WOFF2) is scanned for the upstream name.
+- fontspector runs the Google Fonts profile on the variable font, the static TTFs and the
+  OTFs. A FAIL, ERROR or FATAL fails this script unless release/known-fails.toml lists its
+  check and failure code with a reason; a listed failure that no longer occurs is reported,
+  so the list can shrink.
+- Shaperglot checks kn_Knda through tools/shaperglot_gate.py.
+- tests/test_kannada_fixes.py runs on the released variable font.
+
+Reports go to dist/checks/<family>/.
 """
 
 from __future__ import annotations
@@ -23,45 +28,51 @@ import tempfile
 import tomllib
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
-import rename  # noqa: E402
+from release import unrenamed
+from rename import load
 
 ROOT = Path(__file__).parent.parent
 KNOWN = ROOT / "release" / "known-fails.toml"
 BAD = {"FAIL", "ERROR", "FATAL"}
-SHAPERGLOT = "uvx --from shaperglot==1.2.2 shaperglot"
+SHAPERGLOT_PYTHON = "uvx --from shaperglot==1.2.2 python"
 # Where tests/test_kannada_fixes.py looks for each style's variable font, under BUILD.
 TEST_FONTS = {"sans": "sans/NotoSansKannada-VF.ttf", "serif": "serif/NotoSerifKannada-VF.ttf"}
 
 
-def failing_checks(report: dict) -> dict[str, list[str]]:
-    """check id -> the files (or "family") it failed on."""
-    out: dict[str, list[str]] = {}
-    for path, sections in report["results"].items():
-        for checks in sections.values():
-            for check in checks:
-                if check["worst_status"] in BAD:
-                    out.setdefault(check["check_id"], []).append(Path(path).name or "family")
-    return out
+def failures(report: dict) -> set[tuple[str, str]]:
+    """(check id, failure code) for every FAIL, ERROR or FATAL in a fontspector report."""
+    return {
+        (check["check_id"], sub.get("code") or "")
+        for sections in report["results"].values()
+        for checks in sections.values()
+        for check in checks
+        for sub in check["subresults"]
+        if sub["severity"] in BAD
+    }
 
 
-def fontspector(binary: Path, fonts: list[Path], out: Path) -> dict[str, list[str]]:
+def fontspector(binary: Path, fonts: list[Path], out: Path) -> set[tuple[str, str]]:
     report = out / "fontspector.json"
+    report.unlink(missing_ok=True)
     command = [str(binary), "--profile", "googlefonts", "--skip-network", "--json", str(report)]
     command += ["--ghmarkdown", str(out / "fontspector.md"), *map(str, fonts)]
     subprocess.run(command, check=False)
-    return failing_checks(json.loads(report.read_text()))
+    if not report.exists():
+        raise SystemExit("fontspector wrote no report")
+    return failures(json.loads(report.read_text()))
 
 
-def shaperglot(command: str, font: Path, out: Path) -> bool:
+def shaperglot(python: str, font: Path, out: Path, allowed: list[str]) -> bool:
+    gate = ROOT / "tools" / "shaperglot_gate.py"
     result = subprocess.run(
-        [*shlex.split(command), "check", str(font), "kn_Knda"],
+        [*shlex.split(python), str(gate), str(font), *allowed],
         capture_output=True,
         text=True,
         check=False,
     )
     (out / "shaperglot.txt").write_text(result.stdout + result.stderr)
-    return result.returncode == 0 and "100.0%" in result.stdout
+    print(result.stdout.strip())
+    return result.returncode == 0
 
 
 def shaping_tests(style: str, variable: Path) -> bool:
@@ -83,30 +94,36 @@ def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("style", choices=sorted(TEST_FONTS))
     parser.add_argument("--fontspector", type=Path, required=True)
-    parser.add_argument("--shaperglot", default=SHAPERGLOT, help="command that runs shaperglot")
+    parser.add_argument(
+        "--shaperglot-python", default=SHAPERGLOT_PYTHON, help="a Python that has Shaperglot"
+    )
     parser.add_argument("--dist", type=Path, default=ROOT / "dist")
     args = parser.parse_args(argv)
 
-    names = rename.load(args.style)
+    names = load(args.style)
     folder = args.dist / names.family_ps
     variable = next((folder / "variable").glob("*.ttf"))
     statics = sorted((folder / "ttf").glob("*.ttf"))
+    otfs = sorted((folder / "otf").glob("*.otf"))
     out = args.dist / "checks" / names.family_ps
     out.mkdir(parents=True, exist_ok=True)
 
-    known = tomllib.loads(KNOWN.read_text()).get(args.style, {})
-    failed = fontspector(args.fontspector, [variable, *statics], out)
-    new = sorted(set(failed) - set(known))
-    fixed = sorted(set(known) - set(failed))
-    for check in sorted(failed):
-        print(f"fontspector {check}: {'known' if check in known else 'NEW'}")
-    for check in fixed:
-        print(f"fontspector {check}: listed in known-fails.toml but passes now")
-    glot = shaperglot(args.shaperglot, variable, out)
-    print(f"shaperglot kn_Knda: {'pass' if glot else 'FAIL'}")
+    every_font = sorted(p for p in folder.rglob("*") if p.suffix in {".ttf", ".otf", ".woff2"})
+    for path in every_font:
+        unrenamed(path)
+    print(f"names: no upstream name left in {len(every_font)} fonts")
+
+    known_style = tomllib.loads(KNOWN.read_text()).get(args.style, {})
+    known = {(check, code) for check, entry in known_style.items() for code in entry["codes"]}
+    found = fontspector(args.fontspector, [variable, *statics, *otfs], out)
+    for check, code in sorted(found):
+        print(f"fontspector {check} ({code}): {'known' if (check, code) in known else 'NEW'}")
+    for check, code in sorted(known - found):
+        print(f"fontspector {check} ({code}): listed in known-fails.toml but passes now")
+    glot = shaperglot(args.shaperglot_python, variable, out, [])
     tests = shaping_tests(args.style, variable)
     print(f"tests/test_kannada_fixes.py on {variable.name}: {'pass' if tests else 'FAIL'}")
-    return 0 if not new and glot and tests else 1
+    return 0 if found <= known and glot and tests else 1
 
 
 if __name__ == "__main__":
