@@ -85,11 +85,14 @@ def test_web_subset_covers_kannada_and_shapes_like_the_full_font(sans, tmp_path)
     kannada = {cp for cp in full_cmap if 0x0C80 <= cp <= 0x0CFF}
     assert kannada <= set(font.getBestCmap())
     full, cut = path.read_bytes(), web.read_bytes()
+    full_names, cut_names = TTFont(path).getGlyphOrder(), font.getGlyphOrder()
     for weight in (100, 400, 900):
         for text in SAMPLES:
-            before = [g[1:] for g in shape(full, text, {"wght": weight, "wdth": 100})]
-            after = [g[1:] for g in shape(cut, text, {"wght": weight})]
-            assert before == after, (weight, text)
+            before = shape(full, text, {"wght": weight, "wdth": 100})
+            after = shape(cut, text, {"wght": weight})
+            named_before = [(full_names[g[0]], *g[1:]) for g in before]
+            named_after = [(cut_names[g[0]], *g[1:]) for g in after]
+            assert named_before == named_after, (weight, text)
 
 
 def test_specimen_fills_every_field_and_shows_the_new_letter(sans):
