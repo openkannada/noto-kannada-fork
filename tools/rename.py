@@ -33,6 +33,7 @@ TRADEMARK = 7
 MANUFACTURER = 8
 DESCRIPTION = 10
 VENDOR_URL = 11
+TYPOGRAPHIC_FAMILY = 16
 # Records that may name the upstream font: they credit it.
 CREDITS = {COPYRIGHT, DESCRIPTION}
 UPSTREAM_MARK = "noto"
@@ -75,9 +76,10 @@ class RenameError(ValueError):
 def rename(font: TTFont, names: Names) -> TTFont:
     """Rename the font in place and return it."""
     table = font["name"]
-    if table.getDebugName(FAMILY) != names.upstream:
+    family = table.getDebugName(TYPOGRAPHIC_FAMILY) or table.getDebugName(FAMILY)
+    if family != names.upstream and not family.startswith(f"{names.upstream} "):
         raise RenameError(
-            f"family is {table.getDebugName(FAMILY)!r}, expected {names.upstream!r}; "
+            f"family is {family!r}, expected {names.upstream!r}; "
             "already renamed, or the wrong style"
         )
     table.removeNames(nameID=TRADEMARK)
@@ -120,9 +122,12 @@ def leftovers(font: TTFont) -> list[int]:
     )
 
 
-def file_name(font: TTFont, names: Names) -> str:
-    axes = ",".join(sorted(a.axisTag for a in font["fvar"].axes)) if "fvar" in font else ""
-    return f"{names.family_ps}[{axes}].ttf" if axes else f"{names.family_ps}.ttf"
+def file_name(font: TTFont, names: Names, suffix: str = ".ttf") -> str:
+    """NehaSans[wdth,wght].ttf for a variable font, the PostScript name for a static one."""
+    if "fvar" in font:
+        axes = ",".join(sorted(a.axisTag for a in font["fvar"].axes))
+        return f"{names.family_ps}[{axes}]{suffix}"
+    return f"{font['name'].getDebugName(POSTSCRIPT)}{suffix}"
 
 
 def main(argv: list[str]) -> int:

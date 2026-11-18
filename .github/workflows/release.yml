@@ -1,0 +1,40 @@
+name: Release build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        style: [sans, serif]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+      - run: uv sync --locked --group build --group release
+      - name: Build, rename and package
+        run: uv run python tools/release.py ${{ matrix.style }}
+      - name: Install fontspector 1.9.1
+        run: |
+          curl -sSfLo fontspector.tar.gz https://github.com/fonttools/fontspector/releases/download/fontspector-v1.9.1/fontspector-1.9.1-x86_64-unknown-linux-gnu.tar.gz
+          echo "ff982bfbfb9edb60cb35512964fba2cc6560e94b492cf503f5dc9739c817a6b5  fontspector.tar.gz" | sha256sum -c -
+          mkdir fontspector && tar -xzf fontspector.tar.gz -C fontspector --strip-components 1
+      - name: Check the release fonts
+        run: uv run python tools/check_release.py ${{ matrix.style }} --fontspector fontspector/fontspector
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: release-${{ matrix.style }}
+          path: |
+            dist/*.zip
+            dist/*.zip.sha256
+            dist/checks/
+          if-no-files-found: error

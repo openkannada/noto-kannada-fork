@@ -1,0 +1,6 @@
+# fontspector checks (Google Fonts profile) that fail on the release fonts for reasons outside
+# this release, with the reason. tools/check_release.py fails on any check not listed here.
+
+[sans]
+
+[serif]

@@ -15,5 +15,6 @@ This repository is a fork of [notofonts/kannada](https://github.com/notofonts/ka
 | Files | License |
 |---|---|
 | The font sources and upstream's files | OFL-1.1, see [OFL.txt](OFL.txt) |
-| Tests, tools and configuration written for this fork: `tests/`, `tools/`, `rename.toml`, `pyproject.toml`, `uv.lock`, `.github/workflows/fork-ci.yml` | MIT OR Apache-2.0, copyright The Open Kannada Authors, see [LICENSES](LICENSES) |
-| Documents written for this fork: `FORK.md`, `NOTICE.md`, `CONTRIBUTING.md`, `drafts/` | CC BY 4.0, copyright The Open Kannada Authors, see [LICENSES/CC-BY-4.0.txt](LICENSES/CC-BY-4.0.txt) |
+| Tests, tools and configuration written for this fork: `tests/`, `tools/`, `release/`, `specimen/template.html`, `rename.toml`, `pyproject.toml`, `uv.lock`, `.github/workflows/fork-ci.yml`, `.github/workflows/release.yml` | MIT OR Apache-2.0, copyright The Open Kannada Authors, see [LICENSES](LICENSES) |
+| Documents written for this fork: `FORK.md`, `FONTLOG.txt`, `NOTICE.md`, `CONTRIBUTING.md`, `drafts/` | CC BY 4.0, copyright The Open Kannada Authors, see [LICENSES/CC-BY-4.0.txt](LICENSES/CC-BY-4.0.txt) |
+| `specimen/sample-kn.json`: Kannada sample text from [googlefonts/lang](https://github.com/googlefonts/lang) (`kn_Knda.textproto`, from the Kannada translation of the Universal Declaration of Human Rights), with 4 typos fixed | Apache-2.0, as googlefonts/lang |
