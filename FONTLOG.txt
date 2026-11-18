@@ -22,7 +22,7 @@ ChangeLog
 - ra + vocalic R sign (U+0CB0 U+0CC3) stays as ra with the sign, as typed. Upstream draws it as the vowel letter with a reph (notofonts/kannada#61).
 - U+0CDC KANNADA ARCHAIC SHRII is added in every master. The outlines are drafts: in Neha Sans, Medium and heavier at every width close up the small 3 inside the bowl; in Neha Serif, ExtraBold and Black do the same.
 - The Sans source also defines Noto Sans Kannada UI, a family with taller vertical metrics. It is not part of this release.
-- Built with gftools builder (variable fonts, static TTF autohinted with ttfautohint, static OTF), then renamed, in the name table and in the OTFs' CFF table: family, PostScript and file names, version 1.000, vendor ID NONE, a new unique ID, the trademark record removed, and the copyright line of The Open Kannada Authors added after the upstream one. ExtraLight OTFs have weight class 275, since Windows GDI draws CFF fonts lighter than 250 as bold.
+- Built with gftools builder (variable fonts, static TTF autohinted with ttfautohint, static OTF), then renamed, in the name table and in the OTFs' CFF table: family, PostScript and file names, version 1.000, vendor ID NONE, a new unique ID, the trademark record removed, and the copyright line of The Open Kannada Authors added after the upstream one. Thin and ExtraLight OTFs have weight classes 250 and 275, since Windows GDI draws CFF fonts below 250 as bold.
 
 
 Acknowledgements

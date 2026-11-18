@@ -133,14 +133,12 @@ def test_checksums_list_every_file(tmp_path):
     ]
 
 
-def test_extra_light_otf_gets_weight_class_275():
+def test_thin_and_extra_light_otfs_get_weight_classes_250_and_275():
     font = TTFont(BUILD / FONTS["sans"])
-    font["OS/2"].usWeightClass = 200
-    release.cff_weight_class(font)
-    assert font["OS/2"].usWeightClass == 275
-    font["OS/2"].usWeightClass = 300
-    release.cff_weight_class(font)
-    assert font["OS/2"].usWeightClass == 300
+    for before, after in ((100, 250), (200, 275), (300, 300), (900, 900)):
+        font["OS/2"].usWeightClass = before
+        release.cff_weight_class(font)
+        assert font["OS/2"].usWeightClass == after
 
 
 def test_archive_bytes_depend_only_on_the_files(tmp_path, monkeypatch):

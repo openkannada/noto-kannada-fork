@@ -93,11 +93,14 @@ def renamed(built: Path, names: rename.Names, out: Path, kind: str) -> list[Path
     return written
 
 
+# Windows GDI draws CFF fonts below weight class 250 as bold; Google Fonts asks for these.
+CFF_WEIGHT_CLASS = {100: 250, 200: 275}
+
+
 def cff_weight_class(font: TTFont) -> None:
-    """Windows GDI draws CFF fonts lighter than weight class 250 as bold, so an ExtraLight
-    OTF says 275, as Google Fonts asks."""
-    if font["OS/2"].usWeightClass == 200:
-        font["OS/2"].usWeightClass = 275
+    """Thin and ExtraLight OTFs say 250 and 275."""
+    os2 = font["OS/2"]
+    os2.usWeightClass = CFF_WEIGHT_CLASS.get(os2.usWeightClass, os2.usWeightClass)
 
 
 def unrenamed(path: Path) -> None:
