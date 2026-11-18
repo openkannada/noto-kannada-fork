@@ -2,5 +2,15 @@
 # this release, with the reason. tools/check_release.py fails on any check not listed here.
 
 [sans]
+"googlefonts/glyph_coverage" = "The fonts cover Kannada only; the Google Fonts glyph sets require Latin."
+"googlefonts/glyphsets/shape_languages" = "Follows from glyph_coverage: no Google Fonts glyph set is 80% covered."
+"googlefonts/render_own_name" = "The family name is in Latin letters, which the fonts do not have."
+"googlefonts/repo/dirname_matches_nameid_1" = "Checks the google/fonts repository layout, which this repository does not use."
+"googlefonts/font_names" = "Google Fonts lists width variants as separate families. The static fonts keep the width in the style name (Condensed Bold) within 1 family, as Noto's static fonts do."
+"name/family_and_style_max_length" = "5 static full names, such as Neha Sans ExtraCondensed ExtraLight, are 1 to 3 characters over the 32 that old versions of Microsoft Word show in full."
 
 [serif]
+"googlefonts/glyph_coverage" = "The fonts cover Kannada only; the Google Fonts glyph sets require Latin."
+"googlefonts/glyphsets/shape_languages" = "Follows from glyph_coverage: no Google Fonts glyph set is 80% covered."
+"googlefonts/render_own_name" = "The family name is in Latin letters, which the fonts do not have."
+"googlefonts/repo/dirname_matches_nameid_1" = "Checks the google/fonts repository layout, which this repository does not use."
