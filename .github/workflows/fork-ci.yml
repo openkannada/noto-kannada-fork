@@ -27,11 +27,6 @@ jobs:
         uses: openkannada/font-health-action@v1
         with:
           fonts: dist/*.ttf
-      - if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: font-health
-          path: font-health/report.json
       - run: uv run ruff check tests tools
       - run: uv run ruff format --check tests tools
       - run: uv run pytest -q
