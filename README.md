@@ -30,7 +30,7 @@ Each zip has `OFL.txt`, `FONTLOG.txt` and `SHA256SUMS` inside, and a `.sha256` f
 |---|---|
 | ra followed by the vocalic R sign (ರೃ) stays ra with the sign, as typed. Noto draws it as the vowel letter ಋ with a reph | [notofonts/kannada#61](https://github.com/notofonts/kannada/issues/61) |
 | U+0CDC KANNADA ARCHAIC SHRII, added in every weight | Unicode 17.0, L2/22-006 |
-| Own font names, version 1.000 and vendor ID | Required by the Noto trademark |
+| New names, because Noto is a Google trademark; version 1.000 and vendor ID `NONE` | |
 
 [FORK.md](FORK.md) has the details.
 
