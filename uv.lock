@@ -1128,7 +1128,7 @@ wheels = [
 ]
 
 [[package]]
-name = "noto-kannada-fork-tests"
+name = "neha-fonts-tests"
 version = "0"
 source = { virtual = "." }
 dependencies = [

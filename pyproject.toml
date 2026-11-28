@@ -1,5 +1,5 @@
 [project]
-name = "noto-kannada-fork-tests"
+name = "neha-fonts-tests"
 version = "0"
 description = "Shaping tests for the Kannada fixes in this fork"
 license = "MIT OR Apache-2.0"
