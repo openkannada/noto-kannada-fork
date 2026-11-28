@@ -6,7 +6,7 @@ This repository is a fork of [notofonts/kannada](https://github.com/notofonts/ka
 
 ## Quick start
 
-Download [NehaSans-1.000.zip](https://github.com/openkannada/noto-kannada-fork/releases/download/v1.000/NehaSans-1.000.zip) or [NehaSerif-1.000.zip](https://github.com/openkannada/noto-kannada-fork/releases/download/v1.000/NehaSerif-1.000.zip). On a website, use the Kannada-only variable font from the zip:
+Download [NehaSans-1.000.zip](https://github.com/openkannada/neha-fonts/releases/download/v1.000/NehaSans-1.000.zip) or [NehaSerif-1.000.zip](https://github.com/openkannada/neha-fonts/releases/download/v1.000/NehaSerif-1.000.zip). On a website, use the Kannada-only variable font from the zip:
 
 ```css
 @font-face { font-family: "Neha Sans"; src: url("web/NehaSans-Kannada[wght].woff2") format("woff2"); font-weight: 100 900; }

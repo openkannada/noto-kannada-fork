@@ -24,7 +24,7 @@ Fonts built from this fork are distributed as **Neha Sans**, from Noto Sans Kann
 
 The tool refuses to write a font that still has "Noto" in any name record other than the copyright and the description. `tests/test_rename.py` checks all of this, and that each renamed font shapes exactly like the build it comes from.
 
-Only renamed fonts leave this repository, through the [releases](https://github.com/openkannada/noto-kannada-fork/releases). The repository commits no binaries, and the upstream release workflow is disabled.
+Only renamed fonts leave this repository, through the [releases](https://github.com/openkannada/neha-fonts/releases). The repository commits no binaries, and the upstream release workflow is disabled.
 
 ## Build and test
 
